@@ -116,17 +116,26 @@
             android:orientation="horizontal"
             />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="28sp"
-                android:text="00:00"
-                android:textAlignment="center"
-                android:id="@+id/timerTxt"
-                android:gravity="center_horizontal"
-                />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:text="00:00"
+            android:textAlignment="center"
+            android:id="@+id/timerTxt"
+            android:gravity="center_horizontal"
+            />
 
-
+      <!--  <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:text="0"
+            android:textAlignment="center"
+            android:id="@+id/score"
+            android:gravity="center_horizontal"
+            />
+-->
 
     </LinearLayout>
 </RelativeLayout>

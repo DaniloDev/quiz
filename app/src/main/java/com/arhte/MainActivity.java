@@ -1,29 +1,37 @@
 package com.arhte;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.arhte.Model.Question;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TextView mScoreView;
+    private TextView mQuestion;
 
-    Button b1,b2,b3,b4;
-    TextView t1_question, timerTxt;
-    int total = 1;
+    private Button mButtonChoice1, mButtonChoice2 , mButtonChoice3 , mButtonChoice4;
+
+    private int mScore = 0;
+    private int mQuestionNumber = 0;
+    private String mAnswer;
+    TextView textView_timer;
+
+    private Firebase mQuestionRef, mChoice1Ref, mChoice2Ref, mChoice3Ref, mChoice4Ref, mAnswerRef;
+
     int correct = 0;
-    FirebaseDatabase  database = FirebaseDatabase.getInstance();
     int wrong = 0;
 
     @Override
@@ -31,197 +39,383 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        b1 = (Button) findViewById(R.id.button1);
-        b2 = (Button) findViewById(R.id.button2);
-        b3 = (Button) findViewById(R.id.button3);
-        b4 = (Button) findViewById(R.id.button4);
+       // mScoreView = (TextView) findViewById(R.id.score);
+        mQuestion = (TextView) findViewById(R.id.questionsTxt);
+        textView_timer = (TextView) findViewById(R.id.timerTxt);
 
-        t1_question = (TextView) findViewById(R.id.questionsTxt);
-        timerTxt = (TextView) findViewById(R.id.timerTxt);
+        mButtonChoice1 = (Button) findViewById(R.id.button1);
+        mButtonChoice2 = (Button) findViewById(R.id.button2);
+        mButtonChoice3 = (Button) findViewById(R.id.button3);
+        mButtonChoice4 = (Button) findViewById(R.id.button4);
 
-        updateQuestions();
+        updateQuestion();
+        reuqesttimer(60,textView_timer);
+
+        mButtonChoice1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mButtonChoice1.getText().equals(mAnswer)){
+                    mButtonChoice1.setBackgroundColor(Color.GREEN);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mScore = mScore + 1;
+                            updateScore(mScore);
+                            correct++;
+                            mButtonChoice1.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            updateQuestion();
+
+                            //updateQuestion();
+                        }
+                    }, 1000);
+
+                }else{
+                    wrong++;
+                    mButtonChoice1.setBackgroundColor(Color.RED);
+
+                    if (mButtonChoice2.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice2.setBackgroundColor(Color.GREEN);
+                    } else if (mButtonChoice3.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice3.setBackgroundColor(Color.GREEN);
+                    } else if (mButtonChoice4.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice4.setBackgroundColor(Color.GREEN);
+                    }
+
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            mButtonChoice1.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice2.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice3.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice4.setBackgroundColor(Color.parseColor("#FFFC2C"));
+
+                            updateQuestion();
+                        }
+                    }, 1000);
+
+
+                }
+                //mButtonChoice1.setBackgroundColor(Color.RED);
+               // updateQuestion();
+            }
+        });
+
+
+        mButtonChoice2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mButtonChoice2.getText().equals(mAnswer)){
+                    mButtonChoice2.setBackgroundColor(Color.GREEN);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mScore = mScore + 1;
+                            updateScore(mScore);
+                            correct++;
+                            mButtonChoice2.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            updateQuestion();
+
+                        }
+                    }, 1000);
+
+                   // updateQuestion();
+                }else{
+                    wrong++;
+                    mButtonChoice2.setBackgroundColor(Color.RED);
+
+                    if (mButtonChoice1.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice1.setBackgroundColor(Color.GREEN);
+
+                    } else if (
+                            mButtonChoice3.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice3.setBackgroundColor(Color.GREEN);
+                    } else if (mButtonChoice4.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice4.setBackgroundColor(Color.GREEN);
+                    }
+
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            mButtonChoice1.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice2.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice3.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice4.setBackgroundColor(Color.parseColor("#FFFC2C"));
+
+                            updateQuestion();
+                        }
+                    }, 1000);
+
+
+                }
+               // mButtonChoice1.setBackgroundColor(Color.RED);
+                //updateQuestion();
+            }
+        });
+
+
+        mButtonChoice3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mButtonChoice3.getText().equals(mAnswer)){
+                    mButtonChoice3.setBackgroundColor(Color.GREEN);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mScore = mScore + 1;
+                            updateScore(mScore);
+                            correct++;
+                            mButtonChoice3.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            updateQuestion();
+                        }
+                    }, 1000);
+
+                   // updateQuestion();
+                }else{
+                    wrong++;
+                    mButtonChoice3.setBackgroundColor(Color.RED);
+
+                    if (mButtonChoice1.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice1.setBackgroundColor(Color.GREEN);
+                    } else if (mButtonChoice2.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice2.setBackgroundColor(Color.GREEN);
+                    } else if (mButtonChoice4.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice4.setBackgroundColor(Color.GREEN);
+                    }
+
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            mButtonChoice1.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice2.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice3.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice4.setBackgroundColor(Color.parseColor("#FFFC2C"));
+
+                            updateQuestion();
+                        }
+                    }, 1000);
+
+
+                }
+                //mButtonChoice1.setBackgroundColor(Color.RED);
+               // updateQuestion();
+            }
+        });
+
+
+        mButtonChoice4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mButtonChoice4.getText().equals(mAnswer)){
+                    mButtonChoice4.setBackgroundColor(Color.GREEN);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mScore = mScore + 1;
+                            updateScore(mScore);
+                            correct++;
+                            mButtonChoice4.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            updateQuestion();
+                        }
+                    }, 1000);
+
+                  //  updateQuestion();
+                }else{
+                    wrong++;
+                    mButtonChoice4.setBackgroundColor(Color.RED);
+
+                    if (mButtonChoice1.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice1.setBackgroundColor(Color.GREEN);
+                    } else if (mButtonChoice2.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice2.setBackgroundColor(Color.GREEN);
+                    } else if (mButtonChoice3.getText().toString().equals(mAnswer)) {
+
+                        mButtonChoice3.setBackgroundColor(Color.GREEN);
+                    }
+
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            mButtonChoice1.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice2.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice3.setBackgroundColor(Color.parseColor("#FFFC2C"));
+                            mButtonChoice4.setBackgroundColor(Color.parseColor("#FFFC2C"));
+
+                            updateQuestion();
+                        }
+                    }, 1000);
+
+
+                }
+              //  mButtonChoice1.setBackgroundColor(Color.RED);
+              //  updateQuestion();
+            }
+        });
     }
 
-    private void updateQuestions(){
-        total++;
-        if(total > 4){
-          //Abrir o resultado
+    private void updateScore(int score){
+       // mScoreView.setText("" + mScore);
+    }
 
+    private void updateQuestion() {
 
-        }else{
+        if (mQuestionNumber > 3) {
 
-            DatabaseReference reference = database.getReference()
-                    .child("Questions")
-                    .child(String.valueOf(total));
+           // reuqesttimer(0,textView_timer);
+            textView_timer.setText("Esgotado");
+            Intent intent = new Intent(MainActivity.this,ResultActivity.class);
 
-            reference.addValueEventListener(new ValueEventListener() {
+            intent.putExtra("total",String.valueOf(mQuestionNumber));
+            intent.putExtra("correct",String.valueOf(correct));
+            intent.putExtra("wrong",String.valueOf(wrong));
+            startActivity(intent);
+
+        } else {
+            mQuestionRef = new Firebase("https://quiz-ce549.firebaseio.com/" + mQuestionNumber + "/question");
+            mQuestionRef.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    Question question = dataSnapshot.getValue(Question.class);
-                    t1_question.setText(question.getQuestion());
-                    b1.setText(question.getOption1());
-                    b2.setText(question.getOption2());
-                    b3.setText(question.getOption3());
-                    b4.setText(question.getOption4());
-
-                    b1.setOnClickListener(view -> {
-                        if(b1.getText().toString().equals(question.getAnswer())){
-                            b1.setBackgroundColor(Color.GREEN);
-                            Handler handler = new Handler();
-                            handler.postDelayed(() -> {
-                                correct++;
-                                b1.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                updateQuestions();
-                            }, 1500);
-                        }else{
-                            //Resposta Errada
-                            wrong++;
-                            b1.setBackgroundColor(Color.RED);;
-
-                            if(b2.getText().toString().equals(question.getAnswer())){
-                                b2.setBackgroundColor(Color.GREEN);
-                            }
-                            else
-                                if(b3.getText().toString().equals(question.getAnswer())){
-                                    b3.setBackgroundColor(Color.GREEN);
-                                }
-                            else
-                                if(b4.getText().toString().equals(question.getAnswer())){
-                                    b4.setBackgroundColor(Color.GREEN);
-                                }
-
-                            Handler handler = new Handler();
-                            handler.postDelayed( () -> {
-
-                            b1.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                            b2.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                            b3.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                            b4.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                            updateQuestions();
-                            }, 1500);
-                        }
-                    });
-
-                    b2.setOnClickListener(view -> {
-                        if (b2.getText().toString().equals(question.getAnswer())) {
-                            b2.setBackgroundColor(Color.GREEN);
-                            Handler handler = new Handler();
-                            handler.postDelayed(() -> {
-                                correct++;
-                                b2.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                updateQuestions();
-                            }, 1500);
-                        } else {
-                            //Resposta Errada
-                            wrong++;
-                            b2.setBackgroundColor(Color.RED);
-                            ;
-
-                            if (b1.getText().toString().equals(question.getAnswer())) {
-                                b1.setBackgroundColor(Color.GREEN);
-                            } else if (b3.getText().toString().equals(question.getAnswer())) {
-                                b3.setBackgroundColor(Color.GREEN);
-                            } else if (b4.getText().toString().equals(question.getAnswer())) {
-                                b4.setBackgroundColor(Color.GREEN);
-                            }
-
-                            Handler handler = new Handler();
-                            handler.postDelayed(() -> {
-
-                                b1.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                b2.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                b3.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                b4.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                updateQuestions();
-                            }, 1500);
-                        }
-                    });
-
-                    b3.setOnClickListener(view -> {
-                        if(b3.getText().toString().equals(question.getAnswer())){
-                            b3.setBackgroundColor(Color.GREEN);
-                            Handler handler = new Handler();
-                            handler.postDelayed(() -> {
-                                correct++;
-                                b3.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                updateQuestions();
-                            }, 1500);
-                        }else{
-                            //Resposta Errada
-                            wrong++;
-                            b3.setBackgroundColor(Color.RED);;
-
-                            if(b1.getText().toString().equals(question.getAnswer())){
-                                b1.setBackgroundColor(Color.GREEN);
-                            }
-                            else
-                            if(b2.getText().toString().equals(question.getAnswer())){
-                                b2.setBackgroundColor(Color.GREEN);
-                            }
-                            else
-                            if(b4.getText().toString().equals(question.getAnswer())){
-                                b4.setBackgroundColor(Color.GREEN);
-                            }
-
-                            Handler handler = new Handler();
-                            handler.postDelayed( () -> {
-
-                                b1.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                b2.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                b3.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                b4.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                updateQuestions();
-                            }, 1500);
-                        }
-                    });
-
-                    b4.setOnClickListener(view -> {
-                        if(b4.getText().toString().equals(question.getAnswer())){
-                            b4.setBackgroundColor(Color.GREEN);
-                            Handler handler = new Handler();
-                            handler.postDelayed(() -> {
-                                correct++;
-                                b4.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                updateQuestions();
-                            }, 1500);
-                        }else{
-                            //Resposta Errada
-                            wrong++;
-                            b4.setBackgroundColor(Color.RED);;
-
-                            if(b1.getText().toString().equals(question.getAnswer())){
-                                b1.setBackgroundColor(Color.GREEN);
-                            }
-                            else
-                            if(b2.getText().toString().equals(question.getAnswer())){
-                                b2.setBackgroundColor(Color.GREEN);
-                            }
-                            else
-                            if(b3.getText().toString().equals(question.getAnswer())){
-                                b3.setBackgroundColor(Color.GREEN);
-                            }
-
-                            Handler handler = new Handler();
-                            handler.postDelayed( () -> {
-
-                                b1.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                b2.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                b3.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                b4.setBackgroundColor(Color.parseColor("#FFFC2C"));
-                                updateQuestions();
-                            }, 1500);
-                        }
-                    });
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String question = dataSnapshot.getValue(String.class);
+                    mQuestion.setText(question);
 
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                public void onCancelled(FirebaseError firebaseError) {
 
                 }
             });
 
+            mChoice1Ref = new Firebase("https://quiz-ce549.firebaseio.com/" + mQuestionNumber + "/choice1");
+            mChoice1Ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String choice = dataSnapshot.getValue(String.class);
+                    mButtonChoice1.setText(choice);
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
+            mChoice2Ref = new Firebase("https://quiz-ce549.firebaseio.com/" + mQuestionNumber + "/choice2");
+            mChoice2Ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String choice = dataSnapshot.getValue(String.class);
+                    mButtonChoice2.setText(choice);
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
+            mChoice3Ref = new Firebase("https://quiz-ce549.firebaseio.com/" + mQuestionNumber + "/choice3");
+            mChoice3Ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String choice = dataSnapshot.getValue(String.class);
+                    mButtonChoice3.setText(choice);
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
+            mChoice4Ref = new Firebase("https://quiz-ce549.firebaseio.com/" + mQuestionNumber + "/choice4");
+            mChoice4Ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String choice = dataSnapshot.getValue(String.class);
+                    mButtonChoice4.setText(choice);
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
+            mAnswerRef = new Firebase("https://quiz-ce549.firebaseio.com/" + mQuestionNumber + "/answer");
+            mAnswerRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mAnswer = dataSnapshot.getValue(String.class);
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
+            mQuestionNumber++;
+
         }
+
+    }
+
+    public void reuqesttimer(final int seconds , final TextView txtVi){
+
+        new CountDownTimer(seconds * 700 + 700, 800) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 700);
+                int minutes = seconds /60;
+
+                seconds = seconds %60;
+
+                txtVi.setText(String.format("%02d",minutes) + ":" + String.format("%02d",seconds));
+
+            }
+
+            @Override
+            public void onFinish() {
+                txtVi.setText("Esgotado");
+                Intent intent = new Intent(MainActivity.this,ResultActivity.class);
+                intent.putExtra("total" , String.valueOf(mQuestionNumber + 1));
+                intent.putExtra("correct" , String.valueOf(correct));
+                intent.putExtra("wrong",String.valueOf(wrong));
+                startActivity(intent);
+
+            }
+        }.start();
     }
 }
