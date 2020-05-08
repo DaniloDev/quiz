@@ -16,7 +16,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="78dp"
-        android:text="Total Questions" />
+        android:text="Total de questões" />
 
     <TextView
         android:id="@+id/textViewtq"
@@ -37,7 +37,7 @@
         android:layout_alignStart="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_marginTop="226dp"
-        android:text="Correct Answer"
+        android:text="Resposta(s) Correta(s)"
         android:layout_alignLeft="@+id/textView" />
 
     <TextView
@@ -62,7 +62,7 @@
         android:layout_marginStart="57dp"
         android:layout_marginLeft="57dp"
         android:layout_marginBottom="137dp"
-        android:text="Wrong Answer" />
+        android:text="Resposta(s) Errada(s)" />
 
     <TextView
         android:id="@+id/textViewwa"
@@ -72,5 +72,17 @@
         android:layout_alignBottom="@+id/textView10"
         android:text="TextView"
         android:layout_alignLeft="@+id/textViewtq" />
+
+    <Button
+        android:id="@+id/playAgain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:background="#4CAF50"
+        android:text="JOGAR NOVAMENTE"
+        android:textColor="#FFF"
+        android:textSize="28sp" />
+
 
 </RelativeLayout>

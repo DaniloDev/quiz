@@ -4,11 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class ResultActivity extends AppCompatActivity {
 
     TextView textViewt , textVieww , textViewc ;
+    Button playAgain;
+    String question = "0";
+    String correct = "0";
+    String wrong = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +27,31 @@ public class ResultActivity extends AppCompatActivity {
 
         textViewc = findViewById(R.id.textViewca);
 
+        playAgain = findViewById(R.id.playAgain);
+
+        playAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 question = "0";
+                 correct = "0";
+                 wrong = "0";
+                Intent intent = new Intent(ResultActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         Intent i = getIntent();
 
-        String question = i.getStringExtra("total");
+         question = "0";
+         correct = "0";
+         wrong = "0";
 
-        String correct = i.getStringExtra("correct");
+        question = i.getStringExtra("total");
 
-        String wrong = i.getStringExtra("wrong");
+        correct = i.getStringExtra("correct");
+
+         wrong = i.getStringExtra("wrong");
 
         textViewt.setText(question);
 

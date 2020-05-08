@@ -17,10 +17,13 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.sql.Time;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView mScoreView;
     private TextView mQuestion;
+    CountDownTimer  Timer;
 
     private Button mButtonChoice1, mButtonChoice2 , mButtonChoice3 , mButtonChoice4;
 
@@ -287,14 +290,19 @@ public class MainActivity extends AppCompatActivity {
 
         if (mQuestionNumber > 3) {
 
-           // reuqesttimer(0,textView_timer);
-            textView_timer.setText("Esgotado");
-            Intent intent = new Intent(MainActivity.this,ResultActivity.class);
 
+           // reuqesttimer(0,textView_timer);
+            textView_timer.setText("Finalizado");
+            if(Timer != null){
+                Timer.cancel();
+                Timer = null;
+            }
+            Intent intent = new Intent(MainActivity.this,ResultActivity.class);
             intent.putExtra("total",String.valueOf(mQuestionNumber));
             intent.putExtra("correct",String.valueOf(correct));
             intent.putExtra("wrong",String.valueOf(wrong));
             startActivity(intent);
+            finish();
 
         } else {
             mQuestionRef = new Firebase("https://quiz-ce549.firebaseio.com/" + mQuestionNumber + "/question");
@@ -394,7 +402,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void reuqesttimer(final int seconds , final TextView txtVi){
 
-        new CountDownTimer(seconds * 700 + 700, 800) {
+       Timer = new CountDownTimer(seconds * 700 + 700, 800) {
             @Override
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 700);
@@ -408,13 +416,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                txtVi.setText("Esgotado");
-                Intent intent = new Intent(MainActivity.this,ResultActivity.class);
-                intent.putExtra("total" , String.valueOf(mQuestionNumber + 1));
-                intent.putExtra("correct" , String.valueOf(correct));
-                intent.putExtra("wrong",String.valueOf(wrong));
-                startActivity(intent);
-
+                    txtVi.setText("Tempo Esgotado");
+                    Intent intent = new Intent(MainActivity.this,ResultActivity.class);
+                    intent.putExtra("total" , String.valueOf(mQuestionNumber + 1));
+                    intent.putExtra("correct" , String.valueOf(correct));
+                    intent.putExtra("wrong",String.valueOf(wrong));
+                    startActivity(intent);
+                    finish();
             }
         }.start();
     }
