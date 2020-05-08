@@ -418,7 +418,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
                     txtVi.setText("Tempo Esgotado");
                     Intent intent = new Intent(MainActivity.this,ResultActivity.class);
-                    intent.putExtra("total" , String.valueOf(mQuestionNumber + 1));
+                    intent.putExtra("total" , String.valueOf(mQuestionNumber - 1));
                     intent.putExtra("correct" , String.valueOf(correct));
                     intent.putExtra("wrong",String.valueOf(wrong));
                     startActivity(intent);
