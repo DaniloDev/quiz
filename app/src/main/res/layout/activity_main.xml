@@ -18,7 +18,7 @@
             android:layout_height="101dp"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:text="What is this question ?"
+            android:text="CARREGANDO..."
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="19sp" />
@@ -39,7 +39,7 @@
                 android:background="#FFFC2C"
                 android:gravity="center_horizontal"
                 android:padding="10dp"
-                android:text="OPTION 1"
+                android:text="CARREGANDO..."
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
@@ -62,7 +62,7 @@
                 android:background="#FFFC2C"
                 android:gravity="center_horizontal"
                 android:padding="10dp"
-                android:text="OPTION 2"
+                android:text="CARREGANDO..."
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
@@ -85,7 +85,7 @@
                 android:background="#FFFC2C"
                 android:gravity="center_horizontal"
                 android:padding="10dp"
-                android:text="OPTION 3"
+                android:text="CARREGANDO..."
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
@@ -110,7 +110,7 @@
             android:background="#FFFC2C"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:text="OPTION 4"
+            android:text="CARREGANDO..."
             android:textAlignment="center"
             android:textSize="20sp" />
     </LinearLayout>

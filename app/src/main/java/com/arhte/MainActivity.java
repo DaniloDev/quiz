@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         mButtonChoice4 = (Button) findViewById(R.id.button4);
 
         updateQuestion();
-        reuqesttimer(60,textView_timer);
+        reuqesttimer(300,textView_timer);
 
         mButtonChoice1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateQuestion() {
 
-        if (mQuestionNumber > 3) {
+        if (mQuestionNumber > 9) {
 
 
            // reuqesttimer(0,textView_timer);
