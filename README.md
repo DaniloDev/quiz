@@ -16,7 +16,7 @@ Essa aplicação foi feita no intuito de fazer um quiz, no qual as questoes são
   <th>Quiz</th>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/DaniloDev/quiz/quizFinalMODIFICADO/src/imgs/gitf1.gif?token=GHSAT0AAAAAABTIJL2E6A7XASFNK6N4YX5UYSWL5AQ?raw=true" height="600" width="1300" style="max-width:100%;">
+<td><img src="https://raw.githubusercontent.com/DaniloDev/quiz/quizFinalMODIFICADO/src/imgs/gitf1.gif?token=GHSAT0AAAAAABTIJL2E6A7XASFNK6N4YX5UYSWL5AQ" height="600" width="1300" style="max-width:100%;">
 </td>
 
 </tr>
